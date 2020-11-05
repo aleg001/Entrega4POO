@@ -106,7 +106,10 @@ public class Controlador {
       String correo = fila.get(4);
       usuarioSamaj usertrabajito = new usuarioSamaj(nombre, apellido, correo, tel, cod); //Se crea instancia de usuario que va en trabajotemp
 
-      int sueldo = Integer.parseInt(fila.get(7));
+      String datopos7 = fila.get(7);
+		  datopos7 = datopos7.replace(" ","");
+
+      int sueldo = Integer.parseInt(datopos7);
       String categoria = fila.get(5);
       String descripcion = fila.get(6);
       
@@ -132,68 +135,90 @@ public class Controlador {
       //El usuario dice que tiene perfil
       CodigoUsuario = v.IngresoCodigo(docs);
 
-      //Se le muestra su trabajo temp publicado
-      for(int i = 0; i < BaseDatosTrabajos.size(); i++){
-        ArrayList<String> fila = new ArrayList<String>();
-        int cod = Integer.parseInt(fila.get(0));
-        if(CodigoUsuario == cod){
-          /* Se busca el codigo del usuario para mostrar su trabajo y se encuentra una similitud */
-          //Recuperando los datos
-          int tel = Integer.parseInt(fila.get(3));
-          String nombre = fila.get(1);
-          String apellido = fila.get(2);
-          String correo = fila.get(4);
-          usuarioSamaj usertrabajito = new usuarioSamaj(nombre, apellido, correo, tel, cod); //Se crea instancia de usuario que va en trabajotemp
+		ArrayList<usuarioSamaj> usuariosbasedatos = new ArrayList<usuarioSamaj>();
+		usuariosbasedatos = Documentos.getUsuarios();
+		boolean encontrado = false;
+		
+		for(int k = 0; k < usuariosbasedatos.size(); k++){
+			//Recorrer Base datos de usuarios
+			usuarioSamaj usu = null;
+			usu = usuariosbasedatos.get(k);
+			
+			int cod = usu.getCodigo();
+			
+			if(CodigoUsuario == cod){
+				//Encontró el codigo en la base de datos.
+				//Código si existe entonces se toman datos del ArrayList que tenga el código
+				ArrayList<String> datosUsuario = docs.devolverDatos(CodigoUsuario);
+				String NombreU = datosUsuario.get(1);
+				String ApellidoU = datosUsuario.get(2);
+				String CorreoU = datosUsuario.get(4);
+				// TelefonoU
+				String TelefonoU = datosUsuario.get(3); 
+				// codigoU
+				String CodigoU = datosUsuario.get(0); 
+				int Telefono = Integer.parseInt(TelefonoU);
+				int Codigo = Integer.parseInt(CodigoU);
+				user = new usuarioSamaj(NombreU, ApellidoU, CorreoU, Telefono, Codigo);
+				p.nuevoRegistro(user);
+				v.PerfilExito(); //Mensaje de creado con éxito. CHILERISIMO
+				encontrado = true;
+				
+				
+				
+				//Imprime los trabajos que tenga el usuario
+				
+				//Se le muestra su trabajo temp publicado
+				  for(int i = 0; i < BaseDatosTrabajos.size(); i++){
+					ArrayList<String> filon = new ArrayList<String>();
+					filon = BaseDatosTrabajos.get(i);
+					int codigo = Integer.parseInt(filon.get(0));
+					if(CodigoUsuario == codigo){
+					  /* Se busca el codigo del usuario para mostrar su trabajo y se encuentra una similitud */
+					  //Recuperando los datos
+					  int tel = Integer.parseInt(filon.get(3));
+					  String nombre = filon.get(1);
+					  String apellido = filon.get(2);
+					  String correo = filon.get(4);
+					  usuarioSamaj usertrabajito = new usuarioSamaj(nombre, apellido, correo, tel, codigo); //Se crea instancia de usuario que va en trabajotemp
+						
+					String dato  = filon.get(7);
+					dato = dato.replace(" ", "");
+					  int sueldo = Integer.parseInt(dato);
+					  String categoria = filon.get(5);
+					  String descripcion = filon.get(6);
+					  
 
-          int sueldo = Integer.parseInt(fila.get(7));
-          String categoria = fila.get(5);
-          String descripcion = fila.get(6);
-          
+					  TrabajoTemp tratra = new TrabajoTemp(usertrabajito, categoria, descripcion, sueldo); //Se crea trabajo
+					  if(filon.size() >= 8){
+						for(int l = 8; l < filon.size(); l++){
+						  //Recorre los aplicantes y obtiene el dato tipo string para añadirlos en dado caso tenga estos
+						  String x = filon.get(l); 
+						  tratra.agregaraplicanteDato(x);
+						}
+					  }
+					  v.imprimirTrabajo(tratra);
 
-          TrabajoTemp tratra = new TrabajoTemp(usertrabajito, categoria, descripcion, sueldo); //Se crea trabajo
-          if(fila.size() >= 8){
-            for(int l = 8; l < fila.size(); l++){
-              //Recorre los aplicantes y obtiene el dato tipo string para añadirlos en dado caso tenga estos
-              String x = fila.get(l); 
-              tratra.agregaraplicanteDato(x);
-            }
-          }
-          v.imprimirTrabajo(tratra);
+						}
+					}
+				
+				
+			}
+		}if(encontrado == false){
+			/* No encontro el codigo crea un usuario.*/
+			v.IngresoInfo();
+			NombreUsuario = v.ingresarNombre();
+			ApellidoUsuario = v.ingresarApellido();
+			CorreoUsuario = v.ingresarCorreo();
+			TelefonoUsuario = v.ingresarTelefono();
+			CodigoUsuario = v.IngresoCodigo(docs); 
+			user = new usuarioSamaj(NombreUsuario, ApellidoUsuario, CorreoUsuario, TelefonoUsuario, CodigoUsuario );
+			
+			System.out.println("El usuario ---->" + user + "...\n\n");
 
-        }
-      }
-
-
-
-      if (CodigoUsuario == -1) { //El código se verificó y no existe.
-        v.IngresoInfo();
-        NombreUsuario = v.ingresarNombre();
-        ApellidoUsuario = v.ingresarApellido();
-        CorreoUsuario = v.ingresarCorreo();
-        TelefonoUsuario = v.ingresarTelefono();
-        CodigoUsuario = v.IngresoCodigo(docs); 
-        user = new usuarioSamaj(NombreUsuario, ApellidoUsuario, CorreoUsuario, TelefonoUsuario, CodigoUsuario );
-        
-        System.out.println("El usuario ---->" + user + "...\n\n");
-
-        p.nuevoRegistro(user);
-        v.PerfilExito(); //Mensaje de creado con éxito. CHILERISIMO
-      }
-      else { //Código si existe entonces se toman datos del ArrayList que tenga el código
-        ArrayList<String> datosUsuario = docs.devolverDatos(CodigoUsuario);
-        String NombreU = datosUsuario.get(1);
-        String ApellidoU = datosUsuario.get(2);
-        String CorreoU = datosUsuario.get(4);
-        // TelefonoU
-        String TelefonoU = datosUsuario.get(3); 
-        // codigoU
-        String CodigoU = datosUsuario.get(0); 
-        int Telefono = Integer.parseInt(TelefonoU);
-        int Codigo = Integer.parseInt(CodigoU);
-        user = new usuarioSamaj(NombreU, ApellidoU, CorreoU, Telefono, Codigo);
-        p.nuevoRegistro(user);
-        v.PerfilExito(); //Mensaje de creado con éxito. CHILERISIMO
-      }
+			p.nuevoRegistro(user);
+			v.PerfilExito(); //Mensaje de creado con éxito. CHILERISIMO
+			}
       
       /*
       Se buscará el CodigoUsuario en el CSV
@@ -215,6 +240,7 @@ public class Controlador {
       v.PerfilExito(); //Mensaje de creado con éxito. CHILERISIMO
     }
 
+	    v.mostrarinfoaUsuario(user);
     // C O M I E N Z A   M E N Ú   G E N E R A L
     while ( salir == false) {
       int opcion = v.MenuGeneral(); //Método de Menú de vista
@@ -281,6 +307,7 @@ public class Controlador {
         int Sueldo = v.ingresarSueldo();
         TrabajoTemp TrabajosTempo = new TrabajoTemp( user, CategoriaTrabajo, DescripcionTrabajo, Sueldo );
         docs.AddTrabajoTemp(TrabajosTempo);
+        p.NuevoRegistroTrabajoTemp(TrabajosTempo);
       }
       else if (opcion == 3) {
         //Buscar trabajos temporales

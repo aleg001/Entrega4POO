@@ -772,6 +772,10 @@ public class Vista {
   public void MensajeRegresoMenuPrincipal(){
     System.out.println("Regresando a menu principal... \n \n \n \n");
   }
+  public void mostrarinfoaUsuario(usuarioSamaj x){
+    System.out.println("Tu informacion es:  ");
+    System.out.println(x);
+  }
    
 
 //--------------------------P U B L I C A R   T R A B A J O   T E M P O R A L --------------------
@@ -811,21 +815,20 @@ public class Vista {
       ArrayList<String> aplicantes = xx.getaplicantesDatos();
       System.out.println("\n\nSu trabajo: \n" + xx + "\n");
       int num = 1;
-      for(int i = 0; i < aplicantes.size(); i++){
-        //Recorre el listado de aplicantes
-        if(num == 2){
-          num = 1;
-          String data = aplicantes.get(i);
-          System.out.println("      -" + data + "\n\n");
-          
-
-        }else if(num == 1){
-          num++;
-          String data = aplicantes.get(i);
-          System.out.println("El trabajador que ha aplicado es: \n" + "      -" + data);
-        }
-
-      }
+	    if(aplicantes.size() != 0){
+		    for(int i = 0; i < aplicantes.size(); i++) {
+		  	//Recorre el listado de aplicantes
+		    if(num == 2) {
+		      num = 1;
+		      String data = aplicantes.get(i);
+		      System.out.println("      -" + data + "\n\n");
+		  	} else if(num == 1) {
+		  	  num++;
+		  	  String data = aplicantes.get(i);
+		  	  System.out.println("El trabajador que ha aplicado es: \n" + "      -" + data);
+		  	  }
+		    } 
+		  } 
     }
 
 //-------------------------C O N E X I O N ----------------------------------------------
