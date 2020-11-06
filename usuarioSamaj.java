@@ -43,6 +43,7 @@ public class usuarioSamaj {
     /**
      * Override toString
      * @return String Información básica de un usuario
+     * @author Paola de León
      */
     public String toString() {
         String msj = "INFORMACION USUARIO:";

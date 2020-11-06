@@ -32,6 +32,7 @@ public class TrabajoTemp {
     this.Sueldo = Sueldo;
     Aplicantes = new ArrayList<usuarioSamaj>(); 
     this.user = usu;
+    aplicantesDatos = new ArrayList<String>();
   }
 
   // Getters
@@ -114,7 +115,7 @@ public class TrabajoTemp {
    * Método para obtener la información de un trabajo temporal
    * @param a Trabajo temporal del cuál se quiere saber la info.
    * @return String De la info.
-   * @author
+   * @author Alejandro Gomez
    */
   public String toString( ) {
     String mensaje = "";

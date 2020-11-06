@@ -51,12 +51,12 @@ import java.lang.Boolean;
 
          registrarBD(fila, "TABLA1");
    }
-// Tomar en cuenta los parámetros.
-// Parámetro "TABLA1" para recibir ArrayList de ArrayList de la clase usuarioSamaj
-// Parámetro "TABLA2" para recibir ArrayList de ArrayList de la clase TrabajadorFormal
-// Parámetro "TABLA3" para recibir ArrayList de ArrayList de la clase TrabajoTemp
-
-// Metodo que devuelve un ArrayList de ArrayList de toda la info solo de una tabla en la bd en específico
+   // Tomar en cuenta los parámetros.
+   // Parámetro "TABLA1" para recibir ArrayList de ArrayList de la clase usuarioSamaj
+   // Parámetro "TABLA2" para recibir ArrayList de ArrayList de la clase TrabajadorFormal
+   // Parámetro "TABLA3" para recibir ArrayList de ArrayList de la clase TrabajoTemp
+   
+   // Metodo que devuelve un ArrayList de ArrayList de toda la info solo de una tabla en la bd en específico
   public ArrayList<ArrayList<String>> obtenerDatos(String tabla){
 		ArrayList<ArrayList<String>> datos = new ArrayList<ArrayList<String>>();
 		try{
@@ -75,8 +75,9 @@ import java.lang.Boolean;
 		}
 
 		return datos;
-	}
- // Metodo para agregar al csv 
+   }
+   
+   // Metodo para agregar al csv 
    public void NuevoRegistroTrabajoTemp( TrabajoTemp trabajito) {
       usuarioSamaj user = trabajito.getUser();
       String cod = Integer.toString(user.getCodigo());
@@ -127,4 +128,34 @@ import java.lang.Boolean;
          String fila = cod+","+nombre+","+apellido+","+correo+","+tel+","+edad+","+educacion+","+idioma+","+exp+","+trans+","+home;
          registrarBD(fila, "TABLA2");
    }
+
+   public String FilaAEliminar( TrabajoTemp trabajito) {
+      String retorno = "";
+      usuarioSamaj user = trabajito.getUser();
+      String cod = Integer.toString(user.getCodigo());
+      String nombre = user.getNombre();
+      String apellido = user.getApellido();
+      String tel = Integer.toString(user.getTelefono());
+      String correo = user.getCorreo();
+
+      String categoria = trabajito.getCategoriaTrabajo();
+      String descripcion = trabajito.getDescripcionTrabajo();
+      String sueldo = Integer.toString(trabajito.getSueldo());
+      String fila = cod+","+nombre+","+apellido+","+tel+","+correo + ", " + categoria + ", " + descripcion + ", " + sueldo;
+      retorno = fila;
+      return retorno;
+   }
+   //Metodo para eliminar 
+   public void eliminarRegistro(String dato){
+      try{
+         PreparedStatement pst = conn.prepareStatement("DELETE FROM TABLA3 WHERE Registro = ? ");
+         pst.setString(1,dato);
+         int i = pst.executeUpdate();
+         System.out.println("Se ha eliminado"+Integer.toString(i)+" registro de la base de datos.");
+      }catch(SQLException sqle){
+         System.out.println(sqle);
+      }
+   }
+
+   
 }

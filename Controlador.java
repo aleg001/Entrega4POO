@@ -266,6 +266,7 @@ public class Controlador {
             Documentos.AddTrabajadorFormal( entacuchado );
             v.PerfilExito();
             v.MensajeTrabajadorFormalExito();
+            p.NuevoRegistroTrabajadorFormal(entacuchado);
           }
           else if ( submenu1 == 2 ) {
             /* Ingresar los datos para crear el perfil donde se obtienen los
@@ -330,6 +331,15 @@ public class Controlador {
             ArrayList<TrabajoTemp> lista = Documentos.getTrabajoTemp();
             TrabajoTemp TrabajitoTemporal = lista.get(seleccion);
             TrabajitoTemporal.agregarAplicante(user);
+            
+            //Método que borra la linea en la base da datos
+            String filaBuscar = p.FilaAEliminar(TrabajitoTemporal);
+
+
+            //Agregan el trabajo modificado.
+            docs.AddTrabajoTemp(TrabajitoTemporal);
+            p.NuevoRegistroTrabajoTemp(TrabajitoTemporal);
+
           }
           else if (buscarTrabajos == 2) {
             //Salir al menú principal

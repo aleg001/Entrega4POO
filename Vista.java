@@ -709,7 +709,7 @@ public class Vista {
    * Método para preguntar a usuario si tiene un perfil creado anteriormente en Samaj 2020.
    * @param n/a.
    * @return int.
-   * @author Marco 
+   * @author Marco Jurado
   */
 
     public int MensajeTieneUsuario(){
@@ -738,7 +738,7 @@ public class Vista {
    * Método para ingresar el código del usuario.
    * @param docs. Esta es la instancia de Documentos en controlador.
    * @return int.
-   * @author Marco 
+   * @author Marco Jurado
   */
   public int IngresoCodigo(Documentos docs){
     int numeritoCOD = 0;
@@ -751,14 +751,15 @@ public class Vista {
       if ( numeritoCOD != -1 ) {
         boolean ExisteCod = docs.verificarCodigo(numeritoCOD);//Método para verificar que sea único.
         if (ExisteCod == false){ //Codigo no existe
+          System.out.println("El codigo NO existe en la base de datos. \n");
           Valide = true;
         }
         else{
-          System.out.println("El codigo ya existe en la base de datos. Ingrese uno nuevo...\n");
+          System.out.println("El codigo ya existe en la base de datos. \n");
+          Valide = true;
         }
       }
     }
-
     return numeritoCOD;
   }
 
@@ -815,20 +816,22 @@ public class Vista {
       ArrayList<String> aplicantes = xx.getaplicantesDatos();
       System.out.println("\n\nSu trabajo: \n" + xx + "\n");
       int num = 1;
-	    if(aplicantes.size() != 0){
-		    for(int i = 0; i < aplicantes.size(); i++) {
-		  	//Recorre el listado de aplicantes
-		    if(num == 2) {
-		      num = 1;
-		      String data = aplicantes.get(i);
-		      System.out.println("      -" + data + "\n\n");
-		  	} else if(num == 1) {
-		  	  num++;
-		  	  String data = aplicantes.get(i);
-		  	  System.out.println("El trabajador que ha aplicado es: \n" + "      -" + data);
-		  	  }
-		    } 
-		  } 
+      if(aplicantes != null){
+        if(aplicantes.size() != 0){
+          for(int i = 0; i < aplicantes.size(); i++) {
+          //Recorre el listado de aplicantes
+          if(num == 2) {
+            num = 1;
+            String data = aplicantes.get(i);
+            System.out.println("      -" + data + "\n\n");
+          } else if(num == 1) {
+            num++;
+            String data = aplicantes.get(i);
+            System.out.println("El trabajador que ha aplicado es: \n" + "      -" + data);
+            }
+          } 
+        } 
+      }  
     }
 
 //-------------------------C O N E X I O N ----------------------------------------------

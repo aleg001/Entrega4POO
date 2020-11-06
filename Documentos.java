@@ -217,7 +217,7 @@ public class Documentos {
    * Método para generar un código aleatorio.
    * @param docs Objeto de documentos.
    * @return int Código generado.
-   * @author Alejandra
+   * @author Paola de León
    */
   public static int generarCod ( Documentos docs ) {
     boolean codCorrecto = false; 
@@ -277,7 +277,7 @@ public class Documentos {
    * Método que verifica si el código ingresado existe en las bases de datos.
    * @param cod Código que se verificará.
    * @return boolean Indicará si existe el código.
-   * @author Alejandra
+   * @author Paola de León
   */
 
   public static boolean verificarEx( int cod ) {
